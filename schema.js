@@ -1,8 +1,6 @@
-
 const fetch = require('node-fetch')
 const util = require('util')
-//const xml2js = require('xml2js')
-const parseXML = require('xml2js').parseString
+const parseXML = util.promisify(require('xml2js').parseString)
 
 const {
     GraphQLSchema,
@@ -57,10 +55,7 @@ module.exports = new GraphQLSchema({
                 resolve: (root, args) => fetch(
                     `https://www.goodreads.com/author/show.xml?id=${args.id}&key=ZCYaT2kiTjM6VUkY7GxEDA`)
                     .then(response => response.json())
-                    .then(parseXML(xml, function (err, result) {
-                        console.warn(xhr.responseText)
-                        console.dir(result);
-                    }))
+                    .then(parseXML)
             }
         })
     })
